@@ -61,11 +61,10 @@
     "buffer": "^6.0.3"
   },
   "peerDependencies": {
-    "algosdk": "^2.7.0",
-    "@algorandfoundation/algokit-utils": "*"
+    "algosdk": "^2.7.0"
   },
   "devDependencies": {
-    "@algorandfoundation/algokit-utils": "file:../dist",
+    "@algorandfoundation/algokit-utils": "github:algorandfoundation/algokit-utils-ts#feat/puya-debug",
     "@commitlint/cli": "^18.4.2",
     "@commitlint/config-conventional": "^17.7.0",
     "@makerx/eslint-config": "^3.1.0",

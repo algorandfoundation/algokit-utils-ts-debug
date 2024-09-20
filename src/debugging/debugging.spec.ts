@@ -34,8 +34,8 @@ int 1
 #pragma version 9
 int 1
 `
-      const compiledApproval = await localnet.algorand.app.compileTeal(approval)
-      const compiledClear = await localnet.algorand.app.compileTeal(clear)
+      const compiledApproval = await localnet.context.algorand.client.algod.compile(approval).do()
+      const compiledClear = await localnet.context.algorand.client.algod.compile(clear).do()
 
       await Config.invokeDebugHandlers({
         message: 'persistSourceMaps',
