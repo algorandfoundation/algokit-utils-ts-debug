@@ -37,8 +37,7 @@ int 1
       const compiledApproval = await localnet.context.algorand.client.algod.compile(approval).do()
       const compiledClear = await localnet.context.algorand.client.algod.compile(clear).do()
 
-      await Config.invokeDebugHandlers({
-        message: 'persistSourceMaps',
+      await Config.events.emitAsync('persistSourceMaps', {
         data: {
           sources: [
             {
@@ -69,6 +68,4 @@ int 1
     },
     timeout,
   )
-
-  // ... (other tests updated similarly)
 })
