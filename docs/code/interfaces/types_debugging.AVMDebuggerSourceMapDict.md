@@ -16,8 +16,8 @@ AVM debugger source map format.
 
 ### txn-group-sources
 
-• **txn-group-sources**: \{ `hash`: `string` ; `sourcemap-location`: `string` }[]
+• **txn-group-sources**: \{ `hash`: `string` ; `sourcemap-location`: `string`  }[]
 
 #### Defined in
 
-[types/debugging.ts:21](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/debug-utils/src/types/debugging.ts#L21)
+[types/debugging.ts:21](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/types/debugging.ts#L21)

@@ -1,10 +1,10 @@
 import algosdk from 'algosdk'
+import { SimulateAndPersistResponseParams } from '../types/debugging'
+import { isNode } from '../utils'
 import Algodv2 = algosdk.Algodv2
 import AtomicTransactionComposer = algosdk.AtomicTransactionComposer
 import EncodedSignedTransaction = algosdk.EncodedSignedTransaction
 import modelsv2 = algosdk.modelsv2
-import { SimulateAndPersistResponseParams } from '../types/debugging'
-import { isNode } from '../utils'
 
 const TRACES_FILE_EXT = '.trace.avm.json'
 const DEBUG_TRACES_DIR = 'debug_traces'
@@ -18,8 +18,9 @@ interface ErrnoException extends Error {
 
 /**
  * Performs a simulation of the transactions loaded into the given AtomicTransactionComposer.
- * @param atc The AtomicTransactionComposer with transaction(s) loaded.
- * @param algod An Algod client to perform the simulation.
+ *
+ * @param atc - The AtomicTransactionComposer with transaction(s) loaded.
+ * @param algod - An Algod client to perform the simulation.
  * @returns The simulation result, which includes various details about how the transactions would be processed.
  */
 export async function performAtomicTransactionComposerSimulate(atc: AtomicTransactionComposer, algod: Algodv2) {
@@ -46,11 +47,10 @@ export async function performAtomicTransactionComposerSimulate(atc: AtomicTransa
 }
 
 /**
- * This function simulates the atomic transactions using the provided `AtomicTransactionComposer` object and `Algodv2` object,
+ * Simulates the atomic transactions using the provided `AtomicTransactionComposer` object and `Algodv2` object,
  * and persists the simulation response to an AlgoKit AVM Debugger compliant JSON file.
  *
- * @param param0 The parameters to control the simulation and persistence.
- *
+ * @param param - The parameters to control the simulation and persistence of Atomic Transaction Composer call and response.
  * @returns The simulation result, which includes various details about how the transactions would be processed.
  *
  * @example

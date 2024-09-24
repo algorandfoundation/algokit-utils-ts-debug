@@ -24,9 +24,9 @@ The compiled code
 
 #### Defined in
 
-[types/debugging.ts:8](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/debug-utils/src/types/debugging.ts#L8)
+[types/debugging.ts:8](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/types/debugging.ts#L8)
 
----
+___
 
 ### compiledBase64ToBytes
 
@@ -36,9 +36,9 @@ The base64 encoded code as a byte array
 
 #### Defined in
 
-[types/debugging.ts:12](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/debug-utils/src/types/debugging.ts#L12)
+[types/debugging.ts:12](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/types/debugging.ts#L12)
 
----
+___
 
 ### compiledHash
 
@@ -48,9 +48,9 @@ The has returned by the compiler
 
 #### Defined in
 
-[types/debugging.ts:10](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/debug-utils/src/types/debugging.ts#L10)
+[types/debugging.ts:10](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/types/debugging.ts#L10)
 
----
+___
 
 ### sourceMap
 
@@ -60,9 +60,9 @@ Source map from the compilation
 
 #### Defined in
 
-[types/debugging.ts:14](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/debug-utils/src/types/debugging.ts#L14)
+[types/debugging.ts:14](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/types/debugging.ts#L14)
 
----
+___
 
 ### teal
 
@@ -72,4 +72,4 @@ Original TEAL code
 
 #### Defined in
 
-[types/debugging.ts:6](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/debug-utils/src/types/debugging.ts#L6)
+[types/debugging.ts:6](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/types/debugging.ts#L6)
