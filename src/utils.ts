@@ -17,6 +17,15 @@ export async function getProjectRoot(): Promise<string> {
   const projectRoot = Config.projectRoot
 
   if (!projectRoot) {
+    const algokitProjectRoot = process.env.ALGOKIT_PROJECT_ROOT
+    if (algokitProjectRoot) {
+      const fs = await import('fs')
+      if (fs.existsSync(algokitProjectRoot)) {
+        Config.configure({ projectRoot: algokitProjectRoot })
+        return algokitProjectRoot
+      }
+    }
+
     const fs = await import('fs')
     const path = await import('path')
 

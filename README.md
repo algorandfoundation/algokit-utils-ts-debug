@@ -22,12 +22,48 @@ import { registerDebugHandlers } from '@algorandfoundation/algokit-utils-debug'
 
 Config.configure({
   debug: true,
-  traceAll: true, // optional, defaults to ignoring simulate on successfull transactions.
+  traceAll: true, // optional, defaults to false, ignoring simulate on successfull transactions.
+  projectRoot: '/path/to/project/root', // if ignored, will try to find the project root automatically by for 'ALGOKIT_PROJECT_ROOT' environment variable or checking filesystem recursively
+  traceBufferSizeMb: 256, // optional, defaults to 256 megabytes. When output folder containing debug trace files exceedes the size, oldest files are removed to optimize for storage consumption. This is useful when you are running a long running application and want to keep the trace files for debugging purposes but also be mindful of storage consumption.
+  maxSearchDepth: 10, // optional, defaults to 10. The maximum depth to search for a an `algokit` config file. By default it will traverse at most `10` folders searching for `.algokit.toml` file which will be used to determine algokit compliant project root path. Ignored if `projectRoot` is provided directly or via `ALGOKIT_PROJECT_ROOT` environment variable.
 })
-registerDebugHandlers() // must be called before any transactions are submitted.
+registerDebugHandlers() // IMPORTANT: must be called before any transactions are submitted.
 ```
 
-See [usage](./docs/README.md#usage) for more.
+See [code documentation](./docs/code/README.md) for more details.
+
+## Overview
+
+This library provides three main functions for debugging Algorand smart contracts:
+
+1. `registerDebugEventHandlers`: The primary function users need to call. It sets up listeners for debugging events emitted by `algokit-utils-ts` (see [AsyncEventEmitter](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/docs/capabilities/event-emitter.md) docs for more details). Must be called before submitting transactions and enabling debug mode in the `algokit-utils-ts` config.
+
+2. `writeTealDebugSourceMaps`: Generates and persists AlgoKit AVM Debugger-compliant sourcemaps. It processes an array of `PersistSourceMapInput` objects, which can contain either raw TEAL or pre-compiled TEAL from algokit.
+
+3. `writeAVMDebugTrace`: Simulates atomic transactions and saves the simulation response as an AlgoKit AVM Debugger-compliant JSON file. It uses the provided `AtomicTransactionComposer` and `Algodv2` client for simulation.
+
+### Default artifact folders
+
+- `{ALGOKIT_PROJECT_ROOT}/.algokit/sources/*`: The folder containing the TEAL source maps and raw TEAL files.
+- `{ALGOKIT_PROJECT_ROOT}/debug_traces`: The folder containing the AVM debug traces.
+
+> Note, TEAL source maps are suffixed with `.tok.map` | `.teal.map` file extension, while Algorand Python source maps are suffixed with `.puya.map`.
+
+### Trace filename format
+
+The trace files generated are named in a specific format to provide useful information about the transactions they contain. The format is as follows:
+
+```ts
+;`${timestamp}_lr${lastRound}_${transactionTypes}.trace.avm.json`
+```
+
+Where:
+
+- `timestamp`: The time when the trace file was created, in ISO 8601 format, with colons and periods removed.
+- `lastRound`: The last round when the simulation was performed.
+- `transactionTypes`: A string representing the types and counts of transactions in the atomic group. Each transaction type is represented as `${count}#${type}`, and different transaction types are separated by underscores.
+
+For example, a trace file might be named `20220301T123456Z_lr1000_2#pay_1#axfer.trace.avm.json`, indicating that the trace file was created at `2022-03-01T12:34:56Z`, the last round was `1000`, and the atomic group contained 2 payment transactions and 1 asset transfer transaction.
 
 ## Guiding principles
 
