@@ -23,9 +23,9 @@ import { registerDebugHandlers } from '@algorandfoundation/algokit-utils-debug'
 Config.configure({
   debug: true,
   traceAll: true, // optional, defaults to false, ignoring simulate on successfull transactions.
-  projectRoot: '/path/to/project/root', // if ignored, will try to find the project root automatically by for 'ALGOKIT_PROJECT_ROOT' environment variable or checking filesystem recursively
-  traceBufferSizeMb: 256, // optional, defaults to 256 megabytes. When output folder containing debug trace files exceedes the size, oldest files are removed to optimize for storage consumption. This is useful when you are running a long running application and want to keep the trace files for debugging purposes but also be mindful of storage consumption.
-  maxSearchDepth: 10, // optional, defaults to 10. The maximum depth to search for a an `algokit` config file. By default it will traverse at most `10` folders searching for `.algokit.toml` file which will be used to determine algokit compliant project root path. Ignored if `projectRoot` is provided directly or via `ALGOKIT_PROJECT_ROOT` environment variable.
+  projectRoot: '/path/to/project/root', // if not set, this package will try to find the project root automatically using either the 'ALGOKIT_PROJECT_ROOT' environment variable or by searching you project structure
+  traceBufferSizeMb: 256, // optional, defaults to 256 megabytes. When the output folder containing debug trace files exceeds the size, oldest files are removed to optimize for storage consumption. This is useful when you are running a long running application and want to keep the trace files for debugging purposes but also be mindful of storage consumption.
+  maxSearchDepth: 10, // optional, defaults to 10. The maximum depth to search for an `algokit` config file. By default it will traverse at most `10` folders searching for `.algokit.toml` file which will be used to determine the algokit compliant project root path. Ignored if `projectRoot` is provided directly or via `ALGOKIT_PROJECT_ROOT` environment variable.
 })
 registerDebugHandlers() // IMPORTANT: must be called before any transactions are submitted.
 ```
