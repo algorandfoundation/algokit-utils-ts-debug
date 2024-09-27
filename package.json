@@ -2,7 +2,7 @@
   "name": "@algorandfoundation/algokit-utils-debug",
   "version": "0.1.0",
   "private": false,
-  "description": "A set of core Algorand utilities written in TypeScript and released via npm that make it easier to build solutions on Algorand.",
+  "description": "A set of addon utilities for generating artifacts for use with AlgoKit AVM Debugger VSCode extension.",
   "author": "Algorand Foundation",
   "license": "MIT",
   "engines": {
@@ -26,11 +26,6 @@
       "import": "./types/*.mjs",
       "require": "./types/*.js"
     },
-    "./testing": {
-      "types": "./testing/index.d.ts",
-      "import": "./testing/index.mjs",
-      "require": "./testing/index.js"
-    },
     "./index.d.ts": "./index.d.ts",
     "./package.json": "./package.json"
   },
@@ -40,7 +35,7 @@
     "build:1-compile": "rollup -c --configPlugin typescript --verbose",
     "build:3-copy-pkg-json": "npx --yes @makerx/ts-toolkit@latest copy-package-json --custom-sections module main type types exports",
     "build:4-copy-readme": "cpy README.md dist",
-    "test": "dotenv -e .env -- jest --coverage --passWithNoTests",
+    "test": "dotenv -e .env -- jest --coverage --passWithNoTests --silent",
     "lint": "eslint ./src/ --ext .ts",
     "lint:fix": "eslint ./src/ --ext .ts --fix",
     "check-types": "tsc --noEmit",
@@ -61,20 +56,20 @@
     "buffer": "^6.0.3"
   },
   "peerDependencies": {
-    "algosdk": "^2.7.0",
-    "@algorandfoundation/algokit-utils": "*"
+    "@algorandfoundation/algokit-utils": "^7.0.0-beta.6",
+    "algosdk": "^2.7.0"
   },
   "devDependencies": {
-    "@algorandfoundation/algokit-utils": "file:../dist",
+    "@algorandfoundation/algokit-utils": "^7.0.0-beta.6",
     "@commitlint/cli": "^18.4.2",
     "@commitlint/config-conventional": "^17.7.0",
     "@makerx/eslint-config": "^3.1.0",
     "@makerx/prettier-config": "^2.0.0",
-    "@makerx/ts-config": "^1.0.1",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
     "@tsconfig/node18": "^18.2.2",
+    "@tsconfig/node20": "^20.1.4",
     "@types/jest": "^29.5.2",
     "@types/uuid": "^9.0.2",
     "algosdk": "^2.7.0",

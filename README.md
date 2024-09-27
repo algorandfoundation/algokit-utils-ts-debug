@@ -1,54 +1,73 @@
-﻿# AlgoKit TypeScript Utilities
+﻿# AlgoKit TypeScript AVM Debugging Utilities
 
-A set of core Algorand utilities written in TypeScript and released via npm that make it easier to build solutions on Algorand. This project is part of [AlgoKit](https://github.com/algorandfoundation/algokit-cli).
+An optional addon package for [algokit-utils-ts](https://github.com/algorandfoundation/algokit-utils-ts) that provides **node** specific utilities that automatically gather artifacts required for instantiating [AlgoKit AVM VSCode Debugger Extension](https://github.com/algorandfoundation/algokit-avm-vscode-debugger). This project is part of [AlgoKit](https://github.com/algorandfoundation/algokit-cli).
 
-The goal of this library is to provide intuitive, productive utility functions that make it easier, quicker and safer to build applications on Algorand. Largely these functions wrap the underlying Algorand SDK, but provide a higher level interface with sensible defaults and capabilities for common tasks.
+Note: [Python's version of algokit-utils](https://github.com/algorandfoundation/algokit-utils-py) contains the same functionality without requiring a separate package install. Consider using that if you are building your AlgoKit project in Python.
 
-Note: If you prefer Python there's an equivalent [Python utility library](https://github.com/algorandfoundation/algokit-utils-py).
-
-[Install](#install) | [Documentation](docs/README.md)
+[Install](#install) | [Documentation](docs/code/README.md)
 
 ## Install
 
 This library can be installed from NPM using your favourite npm client, e.g.:
 
 ```
-npm install @algorandfoundation/algokit-utils
+npm install @algorandfoundation/algokit-utils-debug
 ```
 
-Then to import it:
+Then to import it and activate `utils-ts` debugging:
 
 ```typescript
-import { AlgorandClient, Config } from '@algorandfoundation/algokit-utils'
+import { Config } from '@algorandfoundation/algokit-utils'
+import { registerDebugHandlers } from '@algorandfoundation/algokit-utils-debug'
+
+Config.configure({
+  debug: true,
+  traceAll: true, // optional, defaults to false, ignoring simulate on successfull transactions.
+  projectRoot: '/path/to/project/root', // if not set, this package will try to find the project root automatically using either the 'ALGOKIT_PROJECT_ROOT' environment variable or by searching you project structure
+  traceBufferSizeMb: 256, // optional, defaults to 256 megabytes. When the output folder containing debug trace files exceeds the size, oldest files are removed to optimize for storage consumption. This is useful when you are running a long running application and want to keep the trace files for debugging purposes but also be mindful of storage consumption.
+  maxSearchDepth: 10, // optional, defaults to 10. The maximum depth to search for an `algokit` config file. By default it will traverse at most `10` folders searching for `.algokit.toml` file which will be used to determine the algokit compliant project root path. Ignored if `projectRoot` is provided directly or via `ALGOKIT_PROJECT_ROOT` environment variable.
+})
+registerDebugHandlers() // IMPORTANT: must be called before any transactions are submitted.
 ```
 
-See [usage](./docs/README.md#usage) for more.
+See [code documentation](./docs/code/README.md) for more details.
+
+## Overview
+
+This library provides three main functions for debugging Algorand smart contracts:
+
+1. `registerDebugEventHandlers`: The primary function users need to call. It sets up listeners for debugging events emitted by `algokit-utils-ts` (see [AsyncEventEmitter](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/docs/capabilities/event-emitter.md) docs for more details). Must be called before submitting transactions and enabling debug mode in the `algokit-utils-ts` config.
+
+2. `writeTealDebugSourceMaps`: Generates and persists AlgoKit AVM Debugger-compliant sourcemaps. It processes an array of `PersistSourceMapInput` objects, which can contain either raw TEAL or pre-compiled TEAL from algokit.
+
+3. `writeAVMDebugTrace`: Simulates atomic transactions and saves the simulation response as an AlgoKit AVM Debugger-compliant JSON file. It uses the provided `AtomicTransactionComposer` and `Algodv2` client for simulation.
+
+### Default artifact folders
+
+- `{ALGOKIT_PROJECT_ROOT}/.algokit/sources/*`: The folder containing the TEAL source maps and raw TEAL files.
+- `{ALGOKIT_PROJECT_ROOT}/debug_traces`: The folder containing the AVM debug traces.
+
+> Note, TEAL source maps are suffixed with `.tok.map` | `.teal.map` file extension, while Algorand Python source maps are suffixed with `.puya.map`.
+
+### Trace filename format
+
+The trace files generated are named in a specific format to provide useful information about the transactions they contain. The format is as follows:
+
+```ts
+;`${timestamp}_lr${lastRound}_${transactionTypes}.trace.avm.json`
+```
+
+Where:
+
+- `timestamp`: The time when the trace file was created, in ISO 8601 format, with colons and periods removed.
+- `lastRound`: The last round when the simulation was performed.
+- `transactionTypes`: A string representing the types and counts of transactions in the atomic group. Each transaction type is represented as `${count}#${type}`, and different transaction types are separated by underscores.
+
+For example, a trace file might be named `20220301T123456Z_lr1000_2#pay_1#axfer.trace.avm.json`, indicating that the trace file was created at `2022-03-01T12:34:56Z`, the last round was `1000`, and the atomic group contained 2 payment transactions and 1 asset transfer transaction.
 
 ## Guiding principles
 
 This library follows the [Guiding Principles of AlgoKit](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/algokit.md#guiding-principles).
-
-## NextJS compatibility
-
-`algokit-utils-ts` has a set of `node` specific utilities used for simplifying aggregation of artifacts for [AlgoKit VSCode Debugger Extension](https://github.com/algorandfoundation/algokit-avm-vscode-debugger). Which causes Next.js based projects to fail on `fs` module not found. To fix this issue, you can add the following to your `next.config.js` file:
-
-```js
-  webpack: (config, { isServer }) => {
-    // Fix for Module not found: Can't resolve 'fs'
-    if (!isServer) {
-      config.resolve.fallback.fs = false;
-    }
-    return config;
-  },
-```
-
-The root cause is due to the fact that, unlike many frameworks, Next.js allows you to import server-only (Node.js APIs that don't work in a browser) code into your page files. When Next.js builds your project, it removes server only code from your client-side bundle by checking which code exists inside one any of the following built-in methods (code splitting):
-
-- getServerSideProps
-- getStaticProps
-- getStaticPaths
-
-The Module not found: can't resolve 'xyz' error happens when you try to use server only code outside of these methods. Despite `algokit-utils` lazy loading the node specific code dynamically, Next.js does not seem to correctly identify whether a dynamic import is specific to server or client side. Hence the above fix disables the fallback for `fs` module so it ignores polyfilling it on client side.
 
 ## Contributing
 
