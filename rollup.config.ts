@@ -33,7 +33,7 @@ const normaliseEsmOutput = (): Plugin => {
 }
 
 const config: RollupOptions = {
-  input: ['src/index.ts', 'src/types/*.ts'],
+  input: ['src/index.ts'],
   output: [
     {
       dir: 'dist',
