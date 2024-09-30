@@ -23,7 +23,7 @@ describe('simulateAndPersistResponse tests', () => {
 
     jest.spyOn(process, 'cwd').mockReturnValue(cwd)
     const mockAtc = new algosdk.AtomicTransactionComposer()
-    const mockPay = await localnet.context.algorand.transactions.payment({
+    const mockPay = await localnet.context.algorand.createTransaction.payment({
       sender: 'BOB4H2EFAL3OKDEE2FATYKJRQZSKGLXM7KB6CKSSIBENJCO2SVXDLZ6IBI',
       receiver: 'BOB4H2EFAL3OKDEE2FATYKJRQZSKGLXM7KB6CKSSIBENJCO2SVXDLZ6IBI',
       amount: (0).algo(),

@@ -28,10 +28,11 @@ async function writeTealDebugSourceMap(source: TealSourceDebugEventData, project
 }
 
 /**
- * Generates a source map for the given Teal source code.
+ * Generates and writes debug source maps for multiple TEAL sources.
  *
- * @param param0 The parameters to define the source map generation.
- * @returns A promise that resolves when the source map has been generated.
+ * @param input - An object of type TealSourcesDebugEventData containing an array of TEAL sources.
+ * @returns A promise that resolves when all source maps have been generated and written.
+ * @throws Will throw an error if there's an issue during the source map generation or writing process.
  */
 export async function writeTealDebugSourceMaps(input: TealSourcesDebugEventData): Promise<void> {
   const sources = input.sources
