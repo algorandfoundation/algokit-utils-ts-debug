@@ -30,7 +30,7 @@ export async function getProjectRoot(): Promise<string> {
     const path = await import('path')
 
     let currentPath = process.cwd()
-    for (let i = 0; i < Config.maxSearchDepth ?? DEFAULT_MAX_SEARCH_DEPTH; i++) {
+    for (let i = 0; i < (Config.maxSearchDepth || DEFAULT_MAX_SEARCH_DEPTH); i++) {
       if (fs.existsSync(`${currentPath}/.algokit.toml`)) {
         Config.configure({ projectRoot: currentPath })
         return currentPath
