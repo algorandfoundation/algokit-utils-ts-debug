@@ -1,6 +1,5 @@
-import { Config } from '@algorandfoundation/algokit-utils'
+import { Config, EventType } from '@algorandfoundation/algokit-utils'
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
-import { EventType } from '@algorandfoundation/algokit-utils/types/lifecycle-events'
 import { describe, expect, test } from '@jest/globals'
 import algosdk from 'algosdk'
 import * as fsSync from 'fs'

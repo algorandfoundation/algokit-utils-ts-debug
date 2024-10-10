@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AVMTracesEventData, Config, TealSourcesDebugEventData } from '@algorandfoundation/algokit-utils'
-import { EventType } from '@algorandfoundation/algokit-utils/types/lifecycle-events'
+import { AVMTracesEventData, Config, EventType, TealSourcesDebugEventData } from '@algorandfoundation/algokit-utils'
 import { writeAVMDebugTrace, writeTealDebugSourceMaps } from './debugging'
 
 /**

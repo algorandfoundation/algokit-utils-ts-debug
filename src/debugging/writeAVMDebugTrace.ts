@@ -1,4 +1,4 @@
-import { AVMTracesEventData } from '@algorandfoundation/algokit-utils/types/debugging'
+import { AVMTracesEventData } from '@algorandfoundation/algokit-utils'
 import { DEBUG_TRACES_DIR } from '../constants'
 import { getProjectRoot, joinPaths, writeToFile } from '../utils'
 

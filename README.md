@@ -18,7 +18,7 @@ Then to import it and activate `utils-ts` debugging:
 
 ```typescript
 import { Config } from '@algorandfoundation/algokit-utils'
-import { registerDebugHandlers } from '@algorandfoundation/algokit-utils-debug'
+import { registerDebugEventHandlers() } from '@algorandfoundation/algokit-utils-debug'
 
 Config.configure({
   debug: true,
@@ -27,7 +27,7 @@ Config.configure({
   traceBufferSizeMb: 256, // optional, defaults to 256 megabytes. When the output folder containing debug trace files exceeds the size, oldest files are removed to optimize for storage consumption. This is useful when you are running a long running application and want to keep the trace files for debugging purposes but also be mindful of storage consumption.
   maxSearchDepth: 10, // optional, defaults to 10. The maximum depth to search for an `algokit` config file. By default it will traverse at most `10` folders searching for `.algokit.toml` file which will be used to determine the algokit compliant project root path. Ignored if `projectRoot` is provided directly or via `ALGOKIT_PROJECT_ROOT` environment variable.
 })
-registerDebugHandlers() // IMPORTANT: must be called before any transactions are submitted.
+registerDebugEventHandlers() // IMPORTANT: must be called before any transactions are submitted.
 ```
 
 See [code documentation](./docs/code/README.md) for more details.
