@@ -1,6 +1,6 @@
 import { Config, performAtomicTransactionComposerSimulate } from '@algorandfoundation/algokit-utils'
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
-import { EventType } from '@algorandfoundation/algokit-utils/types/async-event-emitter'
+import { EventType } from '@algorandfoundation/algokit-utils/types/lifecycle-events'
 import { describe, expect, test } from '@jest/globals'
 import algosdk, { makeEmptyTransactionSigner } from 'algosdk'
 import * as fs from 'fs/promises'
