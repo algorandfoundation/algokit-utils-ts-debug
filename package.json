@@ -74,7 +74,7 @@
     "@types/uuid": "^9.0.2",
     "algosdk": "^2.7.0",
     "better-npm-audit": "^3.7.3",
-    "conventional-changelog-conventionalcommits": "6.1.0",
+    "conventional-changelog-conventionalcommits": "8.0.0",
     "cpy-cli": "^5.0.0",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.47.0",
