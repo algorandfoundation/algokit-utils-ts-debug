@@ -47,7 +47,7 @@ This library provides three main functions for debugging Algorand smart contract
 - `{ALGOKIT_PROJECT_ROOT}/.algokit/sources/*`: The folder containing the TEAL source maps and raw TEAL files.
 - `{ALGOKIT_PROJECT_ROOT}/debug_traces`: The folder containing the AVM debug traces.
 
-> Note, TEAL source maps are suffixed with `.tok.map` | `.teal.map` file extension, while Algorand Python source maps are suffixed with `.puya.map`.
+> Note, TEAL source maps are suffixed with `.teal.map` (previously `.teal.tok.map` from `algokit-utils-ts` <=v6.x) file extension, while Algorand Python source maps are suffixed with `.puya.map`.
 
 ### Trace filename format
 

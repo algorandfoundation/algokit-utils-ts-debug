@@ -80,7 +80,7 @@ int 1
         const interval = setInterval(() => {
           if (
             fsSync.existsSync(path.join(appOutputPath, 'approval.teal')) &&
-            fsSync.existsSync(path.join(appOutputPath, 'approval.teal.tok.map'))
+            fsSync.existsSync(path.join(appOutputPath, 'approval.teal.map'))
           ) {
             clearInterval(interval)
             resolve(true)
@@ -90,9 +90,9 @@ int 1
 
       expect(await fileExists(sourcemapFilePath)).toBeFalsy()
       expect(await fileExists(path.join(appOutputPath, 'approval.teal'))).toBeTruthy()
-      expect(await fileExists(path.join(appOutputPath, 'approval.teal.tok.map'))).toBeTruthy()
+      expect(await fileExists(path.join(appOutputPath, 'approval.teal.map'))).toBeTruthy()
       expect(await fileExists(path.join(appOutputPath, 'clear.teal'))).toBeTruthy()
-      expect(await fileExists(path.join(appOutputPath, 'clear.teal.tok.map'))).toBeTruthy()
+      expect(await fileExists(path.join(appOutputPath, 'clear.teal.map'))).toBeTruthy()
 
       jest.restoreAllMocks()
     },
