@@ -30,7 +30,7 @@ export async function writeAVMDebugTrace(input: AVMTracesEventData): Promise<voi
     }, {})
 
     const txnTypesStr = Object.entries(txnTypesCount)
-      .map(([type, count]) => `${count}#${type}`)
+      .map(([type, count]) => `${count}${type}`)
       .join('_')
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, '')
