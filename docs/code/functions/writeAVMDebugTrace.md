@@ -36,4 +36,4 @@ console.log(`Trace content: ${result.traceContent}`);
 
 ## Defined in
 
-[debugging/writeAVMDebugTrace.ts:20](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/debugging/writeAVMDebugTrace.ts#L20)
+[debugging/writeAVMDebugTrace.ts:65](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/debugging/writeAVMDebugTrace.ts#L65)

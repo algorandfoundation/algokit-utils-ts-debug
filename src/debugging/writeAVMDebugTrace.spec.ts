@@ -2,13 +2,15 @@ import { Config, EventType, performAtomicTransactionComposerSimulate } from '@al
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
 import { describe, expect, test } from '@jest/globals'
 import algosdk, { makeEmptyTransactionSigner } from 'algosdk'
+import { SimulateResponse } from 'algosdk/dist/types/client/v2/algod/models/types'
 import * as fs from 'fs/promises'
 import * as os from 'os'
 import * as path from 'path'
 import { DEBUG_TRACES_DIR } from '../constants'
 import { registerDebugEventHandlers } from '../index'
+import { generateDebugTraceFilename } from './writeAVMDebugTrace'
 
-describe('simulateAndPersistResponse tests', () => {
+describe('writeAVMDebugTrace tests', () => {
   const localnet = algorandFixture()
 
   beforeAll(async () => {
@@ -43,5 +45,47 @@ describe('simulateAndPersistResponse tests', () => {
     expect(traceContent['txn-groups'][0]['txn-results'][0]['txn-result'].txn.txn.snd).toBe('C4PD6IUC9uUMhNFBPCkxhmSjLuz6g+EqUkBI1InalW4=')
 
     jest.restoreAllMocks()
+  })
+})
+
+describe('generateDebugTraceFilename', () => {
+  const TEST_CASES: Array<[string, object, string]> = [
+    [
+      'single payment transaction',
+      {
+        lastRound: 1000,
+        txnGroups: [
+          {
+            txnResults: [{ txnResult: { txn: { txn: { type: 'pay' } } } }],
+          },
+        ],
+      },
+      '1pay',
+    ],
+    [
+      'multiple transaction types',
+      {
+        lastRound: 1000,
+        txnGroups: [
+          {
+            txnResults: [
+              { txnResult: { txn: { txn: { type: 'pay' } } } },
+              { txnResult: { txn: { txn: { type: 'pay' } } } },
+              { txnResult: { txn: { txn: { type: 'axfer' } } } },
+              { txnResult: { txn: { txn: { type: 'appl' } } } },
+              { txnResult: { txn: { txn: { type: 'appl' } } } },
+              { txnResult: { txn: { txn: { type: 'appl' } } } },
+            ],
+          },
+        ],
+      },
+      '2pay_1axfer_3appl',
+    ],
+  ]
+
+  test.each(TEST_CASES)('%s', (testName, mockResponse, expectedPattern) => {
+    const timestamp = '20230101_120000'
+    const filename = generateDebugTraceFilename(mockResponse as SimulateResponse, timestamp)
+    expect(filename).toBe(`${timestamp}_lr${(mockResponse as SimulateResponse).lastRound}_${expectedPattern}.trace.avm.json`)
   })
 })
