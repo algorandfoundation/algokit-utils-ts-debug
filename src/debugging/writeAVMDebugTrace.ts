@@ -1,7 +1,7 @@
 import { AVMTracesEventData } from '@algorandfoundation/algokit-utils'
 import { SimulateResponse } from 'algosdk/dist/types/client/v2/algod/models/types'
 import { DEBUG_TRACES_DIR } from '../constants'
-import { getProjectRoot, joinPaths, writeToFile } from '../utils'
+import { createDirForFilePathIfNotExists, formatTimestampUTC, getProjectRoot, joinPaths, writeToFile } from '../utils'
 
 type TxnTypeCount = {
   type: string
@@ -9,22 +9,42 @@ type TxnTypeCount = {
 }
 
 /**
- * Formats a date to YYYYMMDD_HHMMSS in UTC, equivalent to algokit-utils-py format:
- * datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S")
+ * Removes old trace files when total size exceeds buffer limit
  */
-export function formatTimestampUTC(date: Date): string {
-  // Get UTC components
-  const year = date.getUTCFullYear()
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0') // Months are zero-based
-  const day = String(date.getUTCDate()).padStart(2, '0')
-  const hours = String(date.getUTCHours()).padStart(2, '0')
-  const minutes = String(date.getUTCMinutes()).padStart(2, '0')
-  const seconds = String(date.getUTCSeconds()).padStart(2, '0')
+export async function cleanupOldFiles(bufferSizeMb: number, outputRootDir: string): Promise<void> {
+  const fs = await import('fs')
+  const path = await import('path')
 
-  // Format the datetime string
-  return `${year}${month}${day}_${hours}${minutes}${seconds}`
+  let totalSize = (
+    await Promise.all(
+      (await fs.promises.readdir(outputRootDir)).map(async (file) => (await fs.promises.stat(path.join(outputRootDir, file))).size),
+    )
+  ).reduce((a, b) => a + b, 0)
+
+  if (totalSize > bufferSizeMb * 1024 * 1024) {
+    const files = await fs.promises.readdir(outputRootDir)
+    const fileStats = await Promise.all(
+      files.map(async (file) => {
+        const stats = await fs.promises.stat(path.join(outputRootDir, file))
+        return { file, mtime: stats.mtime, size: stats.size }
+      }),
+    )
+
+    // Sort by modification time (oldest first)
+    fileStats.sort((a, b) => a.mtime.getTime() - b.mtime.getTime())
+
+    // Remove oldest files until we're under the buffer size
+    while (totalSize > bufferSizeMb * 1024 * 1024 && fileStats.length > 0) {
+      const oldestFile = fileStats.shift()!
+      totalSize -= oldestFile.size
+      await fs.promises.unlink(path.join(outputRootDir, oldestFile.file))
+    }
+  }
 }
 
+/**
+ * Generates a descriptive filename for a debug trace based on transaction types
+ */
 export function generateDebugTraceFilename(simulateResponse: SimulateResponse, timestamp: string): string {
   const txnGroups = simulateResponse.txnGroups
   const txnTypesCount = txnGroups.reduce((acc: Map<string, TxnTypeCount>, txnGroup) => {
@@ -62,7 +82,7 @@ export function generateDebugTraceFilename(simulateResponse: SimulateResponse, t
  * console.log(`Debug trace saved to: ${result.outputPath}`);
  * console.log(`Trace content: ${result.traceContent}`);
  */
-export async function writeAVMDebugTrace(input: AVMTracesEventData): Promise<void> {
+export async function writeAVMDebugTrace(input: AVMTracesEventData, bufferSizeMb: number): Promise<void> {
   try {
     const simulateResponse = input.simulateResponse
     const projectRoot = await getProjectRoot()
@@ -70,6 +90,9 @@ export async function writeAVMDebugTrace(input: AVMTracesEventData): Promise<voi
     const outputRootDir = joinPaths(projectRoot, DEBUG_TRACES_DIR)
     const filename = generateDebugTraceFilename(simulateResponse, timestamp)
     const outputFilePath = joinPaths(outputRootDir, filename)
+
+    await createDirForFilePathIfNotExists(outputFilePath)
+    await cleanupOldFiles(bufferSizeMb, outputRootDir)
 
     await writeToFile(outputFilePath, JSON.stringify(simulateResponse.get_obj_for_encoding(), null, 2))
   } catch (error) {

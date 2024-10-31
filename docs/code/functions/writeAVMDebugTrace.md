@@ -6,7 +6,7 @@
 
 # Function: writeAVMDebugTrace()
 
-> **writeAVMDebugTrace**(`input`): `Promise`\<`void`\>
+> **writeAVMDebugTrace**(`input`, `bufferSizeMb`): `Promise`\<`void`\>
 
 Generates an AVM debug trace from the provided simulation response and persists it to a file.
 
@@ -15,6 +15,8 @@ Generates an AVM debug trace from the provided simulation response and persists 
 • **input**: `AVMTracesEventData`
 
 The AVMTracesEventData containing the simulation response and other relevant information.
+
+• **bufferSizeMb**: `number`
 
 ## Returns
 
@@ -36,4 +38,4 @@ console.log(`Trace content: ${result.traceContent}`);
 
 ## Defined in
 
-[debugging/writeAVMDebugTrace.ts:65](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/debugging/writeAVMDebugTrace.ts#L65)
+[debugging/writeAVMDebugTrace.ts:85](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/debugging/writeAVMDebugTrace.ts#L85)

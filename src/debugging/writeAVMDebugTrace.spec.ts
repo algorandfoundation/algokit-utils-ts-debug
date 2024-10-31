@@ -8,7 +8,7 @@ import * as os from 'os'
 import * as path from 'path'
 import { DEBUG_TRACES_DIR } from '../constants'
 import { registerDebugEventHandlers } from '../index'
-import { generateDebugTraceFilename } from './writeAVMDebugTrace'
+import { cleanupOldFiles, generateDebugTraceFilename } from './writeAVMDebugTrace'
 
 describe('writeAVMDebugTrace tests', () => {
   const localnet = algorandFixture()
@@ -87,5 +87,55 @@ describe('generateDebugTraceFilename', () => {
     const timestamp = '20230101_120000'
     const filename = generateDebugTraceFilename(mockResponse as SimulateResponse, timestamp)
     expect(filename).toBe(`${timestamp}_lr${(mockResponse as SimulateResponse).lastRound}_${expectedPattern}.trace.avm.json`)
+  })
+})
+
+describe('cleanupOldFiles', () => {
+  let tempDir: string
+
+  beforeEach(async () => {
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'debug-traces-'))
+  })
+
+  afterEach(async () => {
+    await fs.rm(tempDir, { recursive: true, force: true })
+  })
+
+  test('removes oldest files when buffer size is exceeded', async () => {
+    // Create test files with different timestamps and sizes
+    const testFiles = [
+      { name: 'old.json', content: 'a'.repeat(1024 * 1024), mtime: new Date('2023-01-01') },
+      { name: 'newer.json', content: 'b'.repeat(1024 * 1024), mtime: new Date('2023-01-02') },
+      { name: 'newest.json', content: 'c'.repeat(1024 * 1024), mtime: new Date('2023-01-03') },
+    ]
+
+    // Create files with specific timestamps
+    for (const file of testFiles) {
+      const filePath = path.join(tempDir, file.name)
+      await fs.writeFile(filePath, file.content)
+      await fs.utimes(filePath, file.mtime, file.mtime)
+    }
+
+    // Set buffer size to 2MB (should remove oldest file)
+    await cleanupOldFiles(2, tempDir)
+
+    // Check remaining files
+    const remainingFiles = await fs.readdir(tempDir)
+    expect(remainingFiles).toHaveLength(2)
+    expect(remainingFiles).toContain('newer.json')
+    expect(remainingFiles).toContain('newest.json')
+    expect(remainingFiles).not.toContain('old.json')
+  })
+
+  test('does nothing when total size is within buffer limit', async () => {
+    const content = 'a'.repeat(512 * 1024) // 512KB
+    await fs.writeFile(path.join(tempDir, 'file1.json'), content)
+    await fs.writeFile(path.join(tempDir, 'file2.json'), content)
+
+    // Set buffer size to 2MB (files total 1MB, should not remove anything)
+    await cleanupOldFiles(2, tempDir)
+
+    const remainingFiles = await fs.readdir(tempDir)
+    expect(remainingFiles).toHaveLength(2)
   })
 })
