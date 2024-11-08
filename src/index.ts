@@ -15,7 +15,7 @@ import { writeAVMDebugTrace, writeTealDebugSourceMaps } from './debugging'
  */
 const registerDebugEventHandlers = (): void => {
   Config.events.on(EventType.TxnGroupSimulated, async (eventData: AVMTracesEventData) => {
-    await writeAVMDebugTrace(eventData)
+    await writeAVMDebugTrace(eventData, Config.traceBufferSizeMb || 256)
   })
   Config.events.on(EventType.AppCompiled, async (data: TealSourcesDebugEventData) => {
     await writeTealDebugSourceMaps(data)
