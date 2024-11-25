@@ -28,4 +28,4 @@ Will throw an error if there's an issue during the source map generation or writ
 
 ## Defined in
 
-[debugging/writeTealDebugSourceMaps.ts:37](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/debugging/writeTealDebugSourceMaps.ts#L37)
+[debugging/writeTealDebugSourceMaps.ts:38](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/debugging/writeTealDebugSourceMaps.ts#L38)
