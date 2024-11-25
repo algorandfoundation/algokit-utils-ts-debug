@@ -1,8 +1,7 @@
-import { Config, EventType, performAtomicTransactionComposerSimulate } from '@algorandfoundation/algokit-utils'
+import { AVMTracesEventData, Config, EventType, performAtomicTransactionComposerSimulate } from '@algorandfoundation/algokit-utils'
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
 import { describe, expect, test } from '@jest/globals'
 import algosdk, { makeEmptyTransactionSigner } from 'algosdk'
-import { SimulateResponse } from 'algosdk/dist/types/client/v2/algod/models/types'
 import * as fs from 'fs/promises'
 import * as os from 'os'
 import * as path from 'path'
@@ -42,7 +41,9 @@ describe('writeAVMDebugTrace tests', () => {
     expect(files.length).toBeGreaterThan(0)
     expect(files[0]).toMatch(/\.trace\.avm\.json$/)
     const traceContent = JSON.parse(await fs.readFile(path.join(debugTracesDir, files[0]), 'utf8'))
-    expect(traceContent['txn-groups'][0]['txn-results'][0]['txn-result'].txn.txn.snd).toBe('C4PD6IUC9uUMhNFBPCkxhmSjLuz6g+EqUkBI1InalW4=')
+    expect(traceContent['txn-groups'][0]['txn-results'][0]['txn-result'].txn.txn.snd).toBe(
+      'BOB4H2EFAL3OKDEE2FATYKJRQZSKGLXM7KB6CKSSIBENJCO2SVXDLZ6IBI',
+    )
 
     jest.restoreAllMocks()
   })
@@ -85,8 +86,10 @@ describe('generateDebugTraceFilename', () => {
 
   test.each(TEST_CASES)('%s', (testName, mockResponse, expectedPattern) => {
     const timestamp = '20230101_120000'
-    const filename = generateDebugTraceFilename(mockResponse as SimulateResponse, timestamp)
-    expect(filename).toBe(`${timestamp}_lr${(mockResponse as SimulateResponse).lastRound}_${expectedPattern}.trace.avm.json`)
+    const filename = generateDebugTraceFilename(mockResponse as AVMTracesEventData['simulateResponse'], timestamp)
+    expect(filename).toBe(
+      `${timestamp}_lr${(mockResponse as AVMTracesEventData['simulateResponse']).lastRound}_${expectedPattern}.trace.avm.json`,
+    )
   })
 })
 

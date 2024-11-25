@@ -56,11 +56,11 @@
     "buffer": "^6.0.3"
   },
   "peerDependencies": {
-    "@algorandfoundation/algokit-utils": "^7.0.0-beta.15",
-    "algosdk": "^2.7.0"
+    "@algorandfoundation/algokit-utils": "^7.0.0 || ^8.0.0",
+    "algosdk": "^2.9.0 || ^3.0.0"
   },
   "devDependencies": {
-    "@algorandfoundation/algokit-utils": "^7.0.0-beta.15",
+    "@algorandfoundation/algokit-utils": "^8.0.0",
     "@commitlint/cli": "^18.4.2",
     "@commitlint/config-conventional": "^17.7.0",
     "@makerx/eslint-config": "^3.1.0",
@@ -72,7 +72,7 @@
     "@tsconfig/node20": "^20.1.4",
     "@types/jest": "^29.5.2",
     "@types/uuid": "^9.0.2",
-    "algosdk": "^2.7.0",
+    "algosdk": "^3.0.0",
     "better-npm-audit": "^3.7.3",
     "conventional-changelog-conventionalcommits": "6.1.0",
     "cpy-cli": "^5.0.0",
