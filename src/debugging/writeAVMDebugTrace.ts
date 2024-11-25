@@ -1,5 +1,5 @@
 import { AVMTracesEventData } from '@algorandfoundation/algokit-utils'
-import { SimulateResponse } from 'algosdk/dist/types/client/v2/algod/models/types'
+import algosdk from 'algosdk'
 import { DEBUG_TRACES_DIR } from '../constants'
 import { createDirForFilePathIfNotExists, formatTimestampUTC, getProjectRoot, joinPaths, writeToFile } from '../utils'
 
@@ -45,7 +45,7 @@ export async function cleanupOldFiles(bufferSizeMb: number, outputRootDir: strin
 /**
  * Generates a descriptive filename for a debug trace based on transaction types
  */
-export function generateDebugTraceFilename(simulateResponse: SimulateResponse, timestamp: string): string {
+export function generateDebugTraceFilename(simulateResponse: AVMTracesEventData['simulateResponse'], timestamp: string): string {
   const txnGroups = simulateResponse.txnGroups
   const txnTypesCount = txnGroups.reduce((acc: Map<string, TxnTypeCount>, txnGroup) => {
     txnGroup.txnResults.forEach(({ txnResult }) => {
@@ -94,7 +94,14 @@ export async function writeAVMDebugTrace(input: AVMTracesEventData, bufferSizeMb
     await createDirForFilePathIfNotExists(outputFilePath)
     await cleanupOldFiles(bufferSizeMb, outputRootDir)
 
-    await writeToFile(outputFilePath, JSON.stringify(simulateResponse.get_obj_for_encoding(), null, 2))
+    const content: string =
+      'get_obj_for_encoding' in simulateResponse && typeof simulateResponse.get_obj_for_encoding === 'function'
+        ? JSON.stringify(simulateResponse.get_obj_for_encoding(), null, 2)
+        : 'encodeJSON' in algosdk && typeof algosdk.encodeJSON === 'function'
+          ? algosdk.encodeJSON(simulateResponse, { space: 2 })
+          : ''
+
+    await writeToFile(outputFilePath, content)
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error))
     throw err

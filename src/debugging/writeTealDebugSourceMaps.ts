@@ -17,9 +17,10 @@ async function writeTealDebugSourceMap(source: TealSourceDebugEventData, project
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const result = source.compiledTeal
-  const sourceMap = result.sourceMap
-  sourceMap.sources = [`${source.fileName}${TEAL_FILE_EXT}`]
-
+  const sourceMap = {
+    ...result.sourceMap,
+    sources: [`${source.fileName}${TEAL_FILE_EXT}`],
+  }
   const outputDirPath = path.join(projectRoot, ALGOKIT_DIR, SOURCES_DIR, source.appName)
   const sourceMapOutputPath = path.join(outputDirPath, `${source.fileName}${TEAL_SOURCEMAP_EXT}`)
   const tealOutputPath = path.join(outputDirPath, `${source.fileName}${TEAL_FILE_EXT}`)
