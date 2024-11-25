@@ -5,7 +5,7 @@ import {
   TEAL_SOURCEMAP_EXT,
   TealSourceDebugEventData,
   TealSourcesDebugEventData,
-} from '@algorandfoundation/algokit-utils/types/debugging'
+} from '@algorandfoundation/algokit-utils'
 import { getProjectRoot, writeToFile } from '../utils'
 
 async function writeTealDebugSourceMap(source: TealSourceDebugEventData, projectRoot: string): Promise<void> {

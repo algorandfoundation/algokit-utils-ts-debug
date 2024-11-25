@@ -1,6 +1,5 @@
-import { Config } from '@algorandfoundation/algokit-utils'
+import { Config, EventType } from '@algorandfoundation/algokit-utils'
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
-import { EventType } from '@algorandfoundation/algokit-utils/types/async-event-emitter'
 import { describe, expect, test } from '@jest/globals'
 import algosdk from 'algosdk'
 import * as fsSync from 'fs'
@@ -81,7 +80,7 @@ int 1
         const interval = setInterval(() => {
           if (
             fsSync.existsSync(path.join(appOutputPath, 'approval.teal')) &&
-            fsSync.existsSync(path.join(appOutputPath, 'approval.teal.tok.map'))
+            fsSync.existsSync(path.join(appOutputPath, 'approval.teal.map'))
           ) {
             clearInterval(interval)
             resolve(true)
@@ -91,9 +90,9 @@ int 1
 
       expect(await fileExists(sourcemapFilePath)).toBeFalsy()
       expect(await fileExists(path.join(appOutputPath, 'approval.teal'))).toBeTruthy()
-      expect(await fileExists(path.join(appOutputPath, 'approval.teal.tok.map'))).toBeTruthy()
+      expect(await fileExists(path.join(appOutputPath, 'approval.teal.map'))).toBeTruthy()
       expect(await fileExists(path.join(appOutputPath, 'clear.teal'))).toBeTruthy()
-      expect(await fileExists(path.join(appOutputPath, 'clear.teal.tok.map'))).toBeTruthy()
+      expect(await fileExists(path.join(appOutputPath, 'clear.teal.map'))).toBeTruthy()
 
       jest.restoreAllMocks()
     },

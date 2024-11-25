@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AVMTracesEventData, Config, TealSourcesDebugEventData } from '@algorandfoundation/algokit-utils'
-import { EventType } from '@algorandfoundation/algokit-utils/types/async-event-emitter'
+import { AVMTracesEventData, Config, EventType, TealSourcesDebugEventData } from '@algorandfoundation/algokit-utils'
 import { writeAVMDebugTrace, writeTealDebugSourceMaps } from './debugging'
 
 /**
@@ -16,7 +15,7 @@ import { writeAVMDebugTrace, writeTealDebugSourceMaps } from './debugging'
  */
 const registerDebugEventHandlers = (): void => {
   Config.events.on(EventType.TxnGroupSimulated, async (eventData: AVMTracesEventData) => {
-    await writeAVMDebugTrace(eventData)
+    await writeAVMDebugTrace(eventData, Config.traceBufferSizeMb || 256)
   })
   Config.events.on(EventType.AppCompiled, async (data: TealSourcesDebugEventData) => {
     await writeTealDebugSourceMaps(data)

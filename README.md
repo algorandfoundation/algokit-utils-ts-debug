@@ -18,7 +18,7 @@ Then to import it and activate `utils-ts` debugging:
 
 ```typescript
 import { Config } from '@algorandfoundation/algokit-utils'
-import { registerDebugHandlers } from '@algorandfoundation/algokit-utils-debug'
+import { registerDebugEventHandlers() } from '@algorandfoundation/algokit-utils-debug'
 
 Config.configure({
   debug: true,
@@ -27,7 +27,7 @@ Config.configure({
   traceBufferSizeMb: 256, // optional, defaults to 256 megabytes. When the output folder containing debug trace files exceeds the size, oldest files are removed to optimize for storage consumption. This is useful when you are running a long running application and want to keep the trace files for debugging purposes but also be mindful of storage consumption.
   maxSearchDepth: 10, // optional, defaults to 10. The maximum depth to search for an `algokit` config file. By default it will traverse at most `10` folders searching for `.algokit.toml` file which will be used to determine the algokit compliant project root path. Ignored if `projectRoot` is provided directly or via `ALGOKIT_PROJECT_ROOT` environment variable.
 })
-registerDebugHandlers() // IMPORTANT: must be called before any transactions are submitted.
+registerDebugEventHandlers() // IMPORTANT: must be called before any transactions are submitted.
 ```
 
 See [code documentation](./docs/code/README.md) for more details.
@@ -47,7 +47,7 @@ This library provides three main functions for debugging Algorand smart contract
 - `{ALGOKIT_PROJECT_ROOT}/.algokit/sources/*`: The folder containing the TEAL source maps and raw TEAL files.
 - `{ALGOKIT_PROJECT_ROOT}/debug_traces`: The folder containing the AVM debug traces.
 
-> Note, TEAL source maps are suffixed with `.tok.map` | `.teal.map` file extension, while Algorand Python source maps are suffixed with `.puya.map`.
+> Note, TEAL source maps are suffixed with `.teal.map` (previously `.teal.tok.map` from `algokit-utils-ts` <=v6.x) file extension, while Algorand Python source maps are suffixed with `.puya.map`.
 
 ### Trace filename format
 
@@ -61,9 +61,9 @@ Where:
 
 - `timestamp`: The time when the trace file was created, in ISO 8601 format, with colons and periods removed.
 - `lastRound`: The last round when the simulation was performed.
-- `transactionTypes`: A string representing the types and counts of transactions in the atomic group. Each transaction type is represented as `${count}#${type}`, and different transaction types are separated by underscores.
+- `transactionTypes`: A string representing the types and counts of transactions in the atomic group. Each transaction type is represented as `${count}${type}`, and different transaction types are separated by underscores.
 
-For example, a trace file might be named `20220301T123456Z_lr1000_2#pay_1#axfer.trace.avm.json`, indicating that the trace file was created at `2022-03-01T12:34:56Z`, the last round was `1000`, and the atomic group contained 2 payment transactions and 1 asset transfer transaction.
+For example, a trace file might be named `20220301T123456Z_lr1000_2pay_1axfer.trace.avm.json`, indicating that the trace file was created at `2022-03-01T12:34:56Z`, the last round was `1000`, and the atomic group contained 2 payment transactions and 1 asset transfer transaction.
 
 ## Guiding principles
 
