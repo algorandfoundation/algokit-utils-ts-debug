@@ -1,6 +1,6 @@
 const ALGOKIT_DIR = '.algokit'
 const SOURCES_DIR = 'sources'
-const DEBUG_TRACES_DIR = 'debug-traces'
+const DEBUG_TRACES_DIR = 'debug_traces'
 const TEAL_FILE_EXT = '.teal'
 const TEAL_SOURCEMAP_EXT = '.teal.map'
 const DEFAULT_MAX_SEARCH_DEPTH = 10
