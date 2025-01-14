@@ -18,7 +18,7 @@ Then to import it and activate `utils-ts` debugging:
 
 ```typescript
 import { Config } from '@algorandfoundation/algokit-utils'
-import { registerDebugEventHandlers() } from '@algorandfoundation/algokit-utils-debug'
+import { registerDebugEventHandlers } from '@algorandfoundation/algokit-utils-debug'
 
 Config.configure({
   debug: true,
