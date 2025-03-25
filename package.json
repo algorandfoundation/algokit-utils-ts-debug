@@ -33,7 +33,7 @@
     "build": "run-s build:*",
     "build:0-clean": "rimraf dist coverage",
     "build:1-compile": "rollup -c --configPlugin typescript --verbose",
-    "build:3-copy-pkg-json": "npx --yes @makerx/ts-toolkit@latest copy-package-json --custom-sections module main type types exports",
+    "build:3-copy-pkg-json": "npx --yes @makerx/ts-toolkit@4.0.0-beta.22 copy-package-json --custom-sections module main type types exports",
     "build:4-copy-readme": "cpy README.md LICENSE dist",
     "test": "dotenv -e .env -- jest --coverage --passWithNoTests --silent",
     "lint": "eslint ./src/ --ext .ts",
@@ -56,11 +56,11 @@
     "buffer": "^6.0.3"
   },
   "peerDependencies": {
-    "@algorandfoundation/algokit-utils": "^7.0.0 || ^8.0.0",
-    "algosdk": "^2.9.0 || ^3.0.0"
+    "@algorandfoundation/algokit-utils": "^9.0.0",
+    "algosdk": "^3.0.0"
   },
   "devDependencies": {
-    "@algorandfoundation/algokit-utils": "^8.0.0",
+    "@algorandfoundation/algokit-utils": "^9.0.0",
     "@commitlint/cli": "^18.4.2",
     "@commitlint/config-conventional": "^17.7.0",
     "@makerx/eslint-config": "^3.1.0",
