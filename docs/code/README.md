@@ -1,4 +1,4 @@
-**@algorandfoundation/algokit-utils-debug** • **Docs**
+**@algorandfoundation/algokit-utils-debug**
 
 ***
 
