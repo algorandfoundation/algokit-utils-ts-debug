@@ -1,4 +1,4 @@
-[**@algorandfoundation/algokit-utils-debug**](../README.md) • **Docs**
+[**@algorandfoundation/algokit-utils-debug**](../README.md)
 
 ***
 
@@ -7,6 +7,8 @@
 # Function: registerDebugEventHandlers()
 
 > **registerDebugEventHandlers**(): `void`
+
+Defined in: [index.ts:16](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/index.ts#L16)
 
 Registers event handlers for debugging events in Algorand development.
 
@@ -19,7 +21,3 @@ These handlers help in debugging Algorand smart contracts by providing detailed 
 ## Returns
 
 `void`
-
-## Defined in
-
-[index.ts:16](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/index.ts#L16)
