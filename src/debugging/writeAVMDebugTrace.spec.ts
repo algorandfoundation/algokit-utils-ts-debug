@@ -1,6 +1,6 @@
 import { AVMTracesEventData, Config, EventType, performAtomicTransactionComposerSimulate } from '@algorandfoundation/algokit-utils'
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
-import { describe, expect, test } from '@jest/globals'
+import { afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest'
 import algosdk, { makeEmptyTransactionSigner } from 'algosdk'
 import * as fs from 'fs/promises'
 import * as os from 'os'
@@ -21,7 +21,7 @@ describe('writeAVMDebugTrace tests', () => {
     const cwd = await fs.mkdtemp(path.join(os.tmpdir(), 'cwd'))
     await fs.writeFile(path.join(cwd, '.algokit.toml'), '')
 
-    jest.spyOn(process, 'cwd').mockReturnValue(cwd)
+    vi.spyOn(process, 'cwd').mockReturnValue(cwd)
     const mockAtc = new algosdk.AtomicTransactionComposer()
     const mockPay = await localnet.context.algorand.createTransaction.payment({
       sender: 'BOB4H2EFAL3OKDEE2FATYKJRQZSKGLXM7KB6CKSSIBENJCO2SVXDLZ6IBI',
@@ -45,7 +45,7 @@ describe('writeAVMDebugTrace tests', () => {
       'BOB4H2EFAL3OKDEE2FATYKJRQZSKGLXM7KB6CKSSIBENJCO2SVXDLZ6IBI',
     )
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
   })
 })
 
