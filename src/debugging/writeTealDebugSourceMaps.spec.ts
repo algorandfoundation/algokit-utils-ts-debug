@@ -1,6 +1,6 @@
 import { Config, EventType } from '@algorandfoundation/algokit-utils'
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
-import { describe, expect, test } from '@jest/globals'
+import { beforeAll, describe, expect, test, vi } from 'vitest'
 import algosdk from 'algosdk'
 import * as fsSync from 'fs'
 import * as fs from 'fs/promises'
@@ -31,7 +31,7 @@ describe('persistSourceMaps tests', () => {
     async () => {
       const cwd = await fs.mkdtemp(path.join(os.tmpdir(), 'cwd'))
       await fs.writeFile(path.join(cwd, '.algokit.toml'), '')
-      jest.spyOn(process, 'cwd').mockReturnValue(cwd)
+      vi.spyOn(process, 'cwd').mockReturnValue(cwd)
 
       const approval = `
 #pragma version 9
@@ -94,7 +94,7 @@ int 1
       expect(await fileExists(path.join(appOutputPath, 'clear.teal'))).toBeTruthy()
       expect(await fileExists(path.join(appOutputPath, 'clear.teal.map'))).toBeTruthy()
 
-      jest.restoreAllMocks()
+      vi.restoreAllMocks()
     },
     timeout,
   )
