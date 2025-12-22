@@ -51,11 +51,10 @@
     "buffer": "^6.0.3"
   },
   "peerDependencies": {
-    "@algorandfoundation/algokit-utils": "^9.0.0",
-    "algosdk": "^3.0.0"
+    "@algorandfoundation/algokit-utils": "10.0.0-alpha.13"
   },
   "devDependencies": {
-    "@algorandfoundation/algokit-utils": "^9.0.0",
+    "@algorandfoundation/algokit-utils": "10.0.0-alpha.13",
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
     "@eslint/js": "^9.15.0",
@@ -67,7 +66,6 @@
     "@tsconfig/node20": "^20.1.4",
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^8.50.0",
-    "algosdk": "^3.0.0",
     "better-npm-audit": "^3.11.0",
     "conventional-changelog-conventionalcommits": "9.1.0",
     "dotenv-cli": "^7.3.0",
