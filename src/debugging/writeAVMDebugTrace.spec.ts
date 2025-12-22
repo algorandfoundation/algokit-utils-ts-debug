@@ -1,10 +1,9 @@
-import { AVMTracesEventData, Config, EventType, performAtomicTransactionComposerSimulate } from '@algorandfoundation/algokit-utils'
+import { AVMTracesEventData, Config, EventType } from '@algorandfoundation/algokit-utils'
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
-import { describe, expect, test } from '@jest/globals'
-import algosdk, { makeEmptyTransactionSigner } from 'algosdk'
 import * as fs from 'fs/promises'
 import * as os from 'os'
 import * as path from 'path'
+import { afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest'
 import { DEBUG_TRACES_DIR } from '../constants'
 import { registerDebugEventHandlers } from '../index'
 import { cleanupOldFiles, generateDebugTraceFilename } from './writeAVMDebugTrace'
@@ -14,26 +13,29 @@ describe('writeAVMDebugTrace tests', () => {
 
   beforeAll(async () => {
     registerDebugEventHandlers()
-    return localnet.beforeEach()
+    return localnet.newScope()
   })
 
   test('respond to algokit-utils txn group simulated event', async () => {
     const cwd = await fs.mkdtemp(path.join(os.tmpdir(), 'cwd'))
     await fs.writeFile(path.join(cwd, '.algokit.toml'), '')
 
-    jest.spyOn(process, 'cwd').mockReturnValue(cwd)
-    const mockAtc = new algosdk.AtomicTransactionComposer()
-    const mockPay = await localnet.context.algorand.createTransaction.payment({
-      sender: 'BOB4H2EFAL3OKDEE2FATYKJRQZSKGLXM7KB6CKSSIBENJCO2SVXDLZ6IBI',
-      receiver: 'BOB4H2EFAL3OKDEE2FATYKJRQZSKGLXM7KB6CKSSIBENJCO2SVXDLZ6IBI',
-      amount: (0).algo(),
-    })
-    mockAtc.addTransaction({ txn: mockPay, signer: makeEmptyTransactionSigner() })
-    const mockAlgod = localnet.context.algorand.client.algod
+    vi.spyOn(process, 'cwd').mockReturnValue(cwd)
 
-    const simulateResponse = await performAtomicTransactionComposerSimulate(mockAtc, mockAlgod)
+    const simulateResult = await localnet.context.algorand
+      .newGroup()
+      .addPayment({
+        sender: 'BOB4H2EFAL3OKDEE2FATYKJRQZSKGLXM7KB6CKSSIBENJCO2SVXDLZ6IBI',
+        receiver: 'BOB4H2EFAL3OKDEE2FATYKJRQZSKGLXM7KB6CKSSIBENJCO2SVXDLZ6IBI',
+        amount: (0).algo(),
+      })
+      .simulate({
+        allowEmptySignatures: true,
+        resultOnFailure: true,
+      })
+
     await Config.events.emitAsync(EventType.TxnGroupSimulated, {
-      simulateResponse,
+      simulateResponse: simulateResult.simulateResponse,
     })
 
     const debugTracesDir = path.join(cwd, DEBUG_TRACES_DIR)
@@ -45,7 +47,7 @@ describe('writeAVMDebugTrace tests', () => {
       'BOB4H2EFAL3OKDEE2FATYKJRQZSKGLXM7KB6CKSSIBENJCO2SVXDLZ6IBI',
     )
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
   })
 })
 
