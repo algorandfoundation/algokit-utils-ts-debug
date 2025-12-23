@@ -8,7 +8,7 @@
 
 > **writeTealDebugSourceMaps**(`input`): `Promise`\<`void`\>
 
-Defined in: [debugging/writeTealDebugSourceMaps.ts:38](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/debugging/writeTealDebugSourceMaps.ts#L38)
+Defined in: [debugging/writeTealDebugSourceMaps.ts:37](https://github.com/algorandfoundation/algokit-utils-ts-debug/blob/main/src/debugging/writeTealDebugSourceMaps.ts#L37)
 
 Generates and writes debug source maps for multiple TEAL sources.
 

@@ -15,7 +15,6 @@ async function writeTealDebugSourceMap(source: TealSourceDebugEventData, project
     throw new Error('No compiled teal found')
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const result = source.compiledTeal
   const sourceMap = {
     ...result.sourceMap,
