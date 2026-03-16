@@ -1,1 +1,7 @@
-{}
+{
+  "1112954": {
+    "active": true,
+    "notes": "Dev tooling dependency (npm -> @isaacs/brace-expansion). Bundled in npm, cannot be fixed automatically.",
+    "expiry": "2026-06-14"
+  }
+}
