@@ -2,9 +2,7 @@ name: Pull Request
 
 on:
   pull_request:
-    branches:
-      - main
-      - alpha
+    branches: [main, alpha]
 
 permissions:
   contents: read
@@ -24,24 +22,30 @@ jobs:
         npm ci --ignore-scripts
       audit-script: |
         npm run audit
+
   check_docs:
     runs-on: ubuntu-latest
     steps:
-      - name: Clone repository
+      - name: Checkout source code
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      - name: Use Node.js 22.x
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           package_json_file: docs/package.json
-      - name: Install root dependencies
+
+      - name: Install dependencies
         run: npm ci
+
       - name: Install docs dependencies
-        run: pnpm --dir docs install --frozen-lockfile
-      - name: Build docs
+        run: pnpm install --frozen-lockfile --dir docs
+
+      - name: Verify documentation builds
         run: pnpm --dir docs build
