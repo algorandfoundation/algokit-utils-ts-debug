@@ -50,8 +50,12 @@ build/
 coverage
 
 # Website & Code docs generation
-code-docs/
 out/
+code-docs/
+docs/_html/
+
+# Claude
+.claude/
 
 # dotenv environment variable files
 .env

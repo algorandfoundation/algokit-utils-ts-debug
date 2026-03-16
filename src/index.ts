@@ -5,8 +5,8 @@ import { writeAVMDebugTrace, writeTealDebugSourceMaps } from './debugging'
  * Registers event handlers for debugging events in Algorand development.
  *
  * This function sets up handlers for the following events:
- * - 'TxnGroupSimulated': Calls the `writeAVMDebugTrace` function to generate and persist an AVM debug trace.
- * - 'AppCompiled': Calls the `writeTealDebugSourceMaps` function to generate and persist TEAL source maps.
+ * - `TxnGroupSimulated`: Calls the `writeAVMDebugTrace` function to generate and persist an AVM debug trace.
+ * - `AppCompiled`: Calls the `writeTealDebugSourceMaps` function to generate and persist TEAL source maps.
  *
  * These handlers help in debugging Algorand smart contracts by providing detailed traces and source maps.
  *

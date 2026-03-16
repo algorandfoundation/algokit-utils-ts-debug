@@ -1,0 +1,19 @@
+[
+  { "label": "Home", "link": "/" },
+  {
+    "label": "Getting Started",
+    "items": [
+      { "label": "Quick Start", "link": "/tutorials/quick-start/" }
+    ]
+  },
+  {
+    "label": "Capabilities",
+    "items": [
+      { "label": "Debugging", "link": "/capabilities/debugging/" }
+    ]
+  },
+  {
+    "label": "API Reference",
+    "autogenerate": { "directory": "api" }
+  }
+]

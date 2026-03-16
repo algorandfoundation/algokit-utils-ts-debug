@@ -4,14 +4,14 @@ An optional addon package for [algokit-utils-ts](https://github.com/algorandfoun
 
 Note: [Python's version of algokit-utils](https://github.com/algorandfoundation/algokit-utils-py) contains the same functionality without requiring a separate package install. Consider using that if you are building your AlgoKit project in Python.
 
-[Install](#install) | [Documentation](docs/code/README.md)
+[Install](#install) | [Documentation](https://algorandfoundation.github.io/algokit-utils-ts-debug/)
 
 ## Install
 
 This library can be installed from NPM using your favourite npm client, e.g.:
 
 ```
-npm install @algorandfoundation/algokit-utils-debug
+npm install @algorandfoundation/algokit-utils @algorandfoundation/algokit-utils-debug
 ```
 
 Then to import it and activate `utils-ts` debugging:
@@ -30,7 +30,7 @@ Config.configure({
 registerDebugEventHandlers() // IMPORTANT: must be called before any transactions are submitted.
 ```
 
-See [code documentation](./docs/code/README.md) for more details.
+See the [documentation site](https://algorandfoundation.github.io/algokit-utils-ts-debug/) for more details.
 
 ## Overview
 
@@ -38,9 +38,9 @@ This library provides three main functions for debugging Algorand smart contract
 
 1. `registerDebugEventHandlers`: The primary function users need to call. It sets up listeners for debugging events emitted by `algokit-utils-ts` (see [AsyncEventEmitter](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/docs/capabilities/event-emitter.md) docs for more details). Must be called before submitting transactions and enabling debug mode in the `algokit-utils-ts` config.
 
-2. `writeTealDebugSourceMaps`: Generates and persists AlgoKit AVM Debugger-compliant sourcemaps. It processes an array of `PersistSourceMapInput` objects, which can contain either raw TEAL or pre-compiled TEAL from algokit.
+2. `writeTealDebugSourceMaps`: Generates and persists AlgoKit AVM Debugger-compliant sourcemaps for compiled TEAL sources. Triggered by `AppCompiled` events, it writes `.teal.map` source map files and raw `.teal` files under `{projectRoot}/.algokit/sources/{appName}/`.
 
-3. `writeAVMDebugTrace`: Simulates atomic transactions and saves the simulation response as an AlgoKit AVM Debugger-compliant JSON file. It uses the provided `AtomicTransactionComposer` and `Algodv2` client for simulation.
+3. `writeAVMDebugTrace`: Persists an AVM debug trace from an already-simulated response as an AlgoKit AVM Debugger-compliant JSON file. Triggered by `TxnGroupSimulated` events.
 
 ### Default artifact folders
 
@@ -53,17 +53,17 @@ This library provides three main functions for debugging Algorand smart contract
 
 The trace files generated are named in a specific format to provide useful information about the transactions they contain. The format is as follows:
 
-```ts
-;`${timestamp}_lr${lastRound}_${transactionTypes}.trace.avm.json`
+```
+${timestamp}_lr${lastRound}_${transactionTypes}.trace.avm.json
 ```
 
 Where:
 
-- `timestamp`: The time when the trace file was created, in ISO 8601 format, with colons and periods removed.
+- `timestamp`: The time when the trace file was created, in `YYYYMMDD_HHMMSS` UTC format.
 - `lastRound`: The last round when the simulation was performed.
 - `transactionTypes`: A string representing the types and counts of transactions in the atomic group. Each transaction type is represented as `${count}${type}`, and different transaction types are separated by underscores.
 
-For example, a trace file might be named `20220301T123456Z_lr1000_2pay_1axfer.trace.avm.json`, indicating that the trace file was created at `2022-03-01T12:34:56Z`, the last round was `1000`, and the atomic group contained 2 payment transactions and 1 asset transfer transaction.
+For example, a trace file might be named `20220301_123456_lr1000_2pay_1axfer.trace.avm.json`, indicating that the trace file was created at `2022-03-01 12:34:56 UTC`, the last round was `1000`, and the atomic group contained 2 payment transactions and 1 asset transfer transaction.
 
 ## Guiding principles
 
