@@ -1,7 +1,17 @@
 {
-  "1112954": {
+  "1115543": {
     "active": true,
-    "notes": "Dev tooling dependency (npm -> @isaacs/brace-expansion). Bundled in npm, cannot be fixed automatically.",
-    "expiry": "2026-06-14"
+    "notes": "Dev tooling dependency (npm -> brace-expansion). Bundled in npm, cannot be fixed automatically.",
+    "expiry": "2026-10-07"
+  },
+  "1115551": {
+    "active": true,
+    "notes": "Dev tooling dependency (npm -> tinyglobby -> picomatch). Bundled in npm, cannot be fixed automatically.",
+    "expiry": "2026-10-07"
+  },
+  "1115554": {
+    "active": true,
+    "notes": "Dev tooling dependency (npm -> tinyglobby -> picomatch). Bundled in npm, cannot be fixed automatically.",
+    "expiry": "2026-10-07"
   }
 }

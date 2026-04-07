@@ -20,7 +20,7 @@ jobs:
     name: Continuous Integration
     uses: makerxstudio/shared-config/.github/workflows/node-ci.yml@main
     with:
-      node-version: 20.x
+      node-version: 24.x
       run-commit-lint: true
       pre-test-script: |
         pipx install algokit
@@ -40,7 +40,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 24.x
 
       - uses: pnpm/action-setup@v4
         with:
@@ -62,7 +62,7 @@ jobs:
       - ci
       - check_docs
     with:
-      node-version: 22.x
+      node-version: 24.x
       build-path: dist
       artifact-name: package
 
@@ -90,10 +90,10 @@ jobs:
         run: git config --global user.email "179917785+engineering-ci[bot]@users.noreply.github.com" && git config --global user.name "engineering-ci[bot]"
 
       # semantic-release v25+ needs node 22.14+
-      - name: Use Node.js 22.x
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 24.x
           registry-url: 'https://registry.npmjs.org'
 
       - name: Download built package
@@ -136,7 +136,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 24.x
           cache: 'npm'
 
       - uses: pnpm/action-setup@v4

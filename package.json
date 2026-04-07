@@ -6,7 +6,7 @@
   "author": "Algorand Foundation",
   "license": "MIT",
   "engines": {
-    "node": ">=20.0"
+    "node": ">=24.0"
   },
   "type": "commonjs",
   "main": "index.js",
@@ -57,7 +57,7 @@
     "@algorandfoundation/algokit-utils": "^10.0.0-alpha.44"
   },
   "devDependencies": {
-    "@algorandfoundation/algokit-utils": "^10.0.0-alpha.44",
+    "@algorandfoundation/algokit-utils": "^10.0.0-alpha.47",
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
     "@eslint/js": "^9.15.0",
@@ -66,7 +66,7 @@
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.2",
-    "@tsconfig/node20": "^20.1.4",
+    "@tsconfig/node24": "^24.0.4",
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^8.50.0",
     "@vitest/coverage-v8": "^3.1.4",
