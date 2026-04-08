@@ -65,7 +65,10 @@ const config: RollupOptions = {
     normaliseEsmOutput(),
     multiInput(),
   ],
-  external: [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies)],
+  external: (id) => {
+    const externalPackages = [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies)]
+    return externalPackages.some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
+  },
   onLog(level: LogLevel, log: RollupLog, handler: LogOrStringHandler) {
     if (log.code === 'CIRCULAR_DEPENDENCY') {
       handler('error', log)
