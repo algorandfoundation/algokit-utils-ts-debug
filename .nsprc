@@ -1,1 +1,17 @@
-{}
+{
+  "1115543": {
+    "active": true,
+    "expiry": "2026-04-22",
+    "notes": "Indirect dependency via npm CLI (brace-expansion), not a runtime vulnerability"
+  },
+  "1115551": {
+    "active": true,
+    "expiry": "2026-04-22",
+    "notes": "Indirect dependency via npm CLI (picomatch), not a runtime vulnerability"
+  },
+  "1115554": {
+    "active": true,
+    "expiry": "2026-04-22",
+    "notes": "Indirect dependency via npm CLI (picomatch), not a runtime vulnerability"
+  }
+}
