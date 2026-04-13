@@ -5,6 +5,10 @@
   "description": "A set of addon utilities for generating artifacts for use with AlgoKit AVM Debugger VSCode extension.",
   "author": "Algorand Foundation",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algorandfoundation/algokit-utils-ts-debug.git"
+  },
   "engines": {
     "node": ">=24.0"
   },
@@ -54,10 +58,10 @@
     "buffer": "^6.0.3"
   },
   "peerDependencies": {
-    "@algorandfoundation/algokit-utils": "^10.0.0-alpha.44"
+    "@algorandfoundation/algokit-utils": "^10.0.0-beta.1"
   },
   "devDependencies": {
-    "@algorandfoundation/algokit-utils": "^10.0.0-alpha.47",
+    "@algorandfoundation/algokit-utils": "^10.0.0-beta.1",
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
     "@eslint/js": "^9.15.0",
