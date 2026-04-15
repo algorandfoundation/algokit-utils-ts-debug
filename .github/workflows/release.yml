@@ -32,28 +32,10 @@ jobs:
   check_docs:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 1
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24.x
-
-      - uses: pnpm/action-setup@v5
-        with:
-          package_json_file: docs/package.json
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install docs dependencies
-        run: pnpm install --frozen-lockfile --dir docs
-
-      - name: Verify documentation builds
-        run: pnpm --dir docs build
+      - uses: ./.github/actions/check-docs
 
   build:
     name: Build
