@@ -70,17 +70,15 @@ export function generateDebugTraceFilename(simulateResponse: AVMTracesEventData[
 /**
  * Generates an AVM debug trace from the provided simulation response and persists it to a file.
  *
- * @param input - The AVMTracesEventData containing the simulation response and other relevant information.
- * @returns An object containing the output file path and the trace content as a string.
+ * @param input - The AVMTracesEventData containing the simulation response.
+ * @param bufferSizeMb - Maximum size in MB for the debug traces directory before old files are cleaned up.
  *
  * @example
  * const eventData: AVMTracesEventData = {
  *   simulateResponse: // ... simulation response object
  * };
  *
- * const result = await writeAVMDebugTrace(eventData);
- * console.log(`Debug trace saved to: ${result.outputPath}`);
- * console.log(`Trace content: ${result.traceContent}`);
+ * await writeAVMDebugTrace(eventData, 256);
  */
 export async function writeAVMDebugTrace(input: AVMTracesEventData, bufferSizeMb: number): Promise<void> {
   try {
