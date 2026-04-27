@@ -11,16 +11,10 @@ jobs:
   pull_request:
     uses: algorandfoundation/algokit-shared-config/.github/workflows/node-ci.yml@chore/node-npm
     with:
-      node-version: 24.x
       run-commit-lint: true
       run-build: true
       install-algokit: true
       audit-script: npm run audit
 
   check_docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
-      - uses: ./.github/actions/check-docs
+    uses: algorandfoundation/algokit-shared-config/.github/workflows/check-docs.yml@chore/node-npm

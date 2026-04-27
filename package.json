@@ -50,7 +50,6 @@
     "docs:dev": "pnpm --dir docs run dev",
     "docs:build": "pnpm --dir docs run build",
     "docs:preview": "pnpm --dir docs run preview",
-    "generate:code-docs": "npm run docs:build",
     "pre-commit": "run-s check-types lint:fix audit format test"
   },
   "overrides": {},

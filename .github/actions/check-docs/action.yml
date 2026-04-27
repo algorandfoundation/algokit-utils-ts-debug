@@ -21,7 +21,8 @@ runs:
         package_json_file: docs/package.json
 
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --ignore-scripts
+
       shell: bash
 
     - name: Install docs dependencies

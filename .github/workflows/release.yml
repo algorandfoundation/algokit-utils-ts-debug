@@ -17,22 +17,15 @@ permissions:
 
 jobs:
   ci:
-    name: Continuous Integration
     uses: algorandfoundation/algokit-shared-config/.github/workflows/node-ci.yml@chore/node-npm
     with:
-      node-version: 24.x
       run-commit-lint: true
       run-build: true
       install-algokit: true
       audit-script: npm run audit
 
   check_docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
-      - uses: ./.github/actions/check-docs
+    uses: algorandfoundation/algokit-shared-config/.github/workflows/check-docs.yml@chore/node-npm
 
   build:
     name: Build
@@ -41,7 +34,6 @@ jobs:
       - ci
       - check_docs
     with:
-      node-version: 24.x
       build-path: dist
       artifact-name: package
 
@@ -59,21 +51,19 @@ jobs:
           app-id: ${{ secrets.BOT_ID }}
           private-key: ${{ secrets.BOT_SK }}
 
-      - uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@v6
         with:
-          # Fetch entire repository history so we can determine version number from it
           fetch-depth: 0
           token: ${{ steps.app_token.outputs.token }}
 
       - name: Set Git user as GitHub actions
         run: git config --global user.email "179917785+engineering-ci[bot]@users.noreply.github.com" && git config --global user.name "engineering-ci[bot]"
 
-      # semantic-release v25+ needs node 22.14+
       - name: Use Node.js 24.x
         uses: actions/setup-node@v6
         with:
           node-version: 24.x
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Download built package
         uses: actions/download-artifact@v8
@@ -101,7 +91,7 @@ jobs:
     needs:
       - ci
       - check_docs
-    if: github.ref == 'refs/heads/alpha'
+    if: github.ref == 'refs/heads/release'
     permissions:
       pages: write
       id-token: write
@@ -112,18 +102,17 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v6
 
-      - name: Setup Node.js
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v6
         with:
           node-version: 24.x
-          cache: 'npm'
 
       - uses: pnpm/action-setup@v5
         with:
           package_json_file: docs/package.json
 
       - name: Install root dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Install docs dependencies
         run: pnpm install --frozen-lockfile --dir docs
