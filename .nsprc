@@ -13,5 +13,10 @@
     "active": true,
     "expiry": "2026-10-22",
     "notes": "Indirect dependency via npm CLI (picomatch), not a runtime vulnerability"
+  },
+  "1118827": {
+    "active": true,
+    "expiry": "2026-10-22",
+    "notes": "Indirect dependency via npm CLI (ip-address), not a runtime vulnerability"
   }
 }
