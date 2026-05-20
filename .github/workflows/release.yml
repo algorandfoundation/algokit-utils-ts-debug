@@ -21,18 +21,18 @@ jobs:
     with:
       run-commit-lint: true
       run-build: true
-      install-algokit: true
       audit-script: npm run audit
+      install-algokit: true
 
   check_docs:
     uses: algorandfoundation/algokit-shared-config/.github/workflows/check-docs.yml@main
 
   build:
     name: Build
-    uses: algorandfoundation/algokit-shared-config/.github/workflows/node-build-zip.yml@main
     needs:
       - ci
       - check_docs
+    uses: algorandfoundation/algokit-shared-config/.github/workflows/node-build-zip.yml@main
     with:
       build-path: dist
       artifact-name: package
@@ -86,42 +86,11 @@ jobs:
           GITHUB_TOKEN: ${{ steps.app_token.outputs.token }}
 
   publish_docs:
-    name: Publish Documentation
-    runs-on: ubuntu-latest
-    needs:
-      - ci
-      - check_docs
-    if: github.ref == 'refs/heads/release'
+    name: Publish docs to GitHub Pages
+    needs: release
+    if: github.ref_name == 'release'
     permissions:
+      contents: read
       pages: write
       id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v6
-
-      - name: Use Node.js 24.x
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24.x
-
-      - uses: pnpm/action-setup@v5
-        with:
-          package_json_file: docs/package.json
-
-      - name: Install root dependencies
-        run: npm ci --ignore-scripts
-
-      - name: Install docs dependencies
-        run: pnpm install --frozen-lockfile --dir docs
-
-      - name: Build documentation
-        run: pnpm --dir docs build
-
-      - name: Publish docs to GitHub Pages
-        id: deployment
-        uses: algorandfoundation/algokit-shared-config/.github/actions/publish-docs@main
-        with:
-          artifact_path: docs/dist
+    uses: algorandfoundation/algokit-shared-config/.github/workflows/publish-docs.yml@main
