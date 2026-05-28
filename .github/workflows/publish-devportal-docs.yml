@@ -3,7 +3,7 @@ name: Publish DevPortal Docs
 on:
   workflow_dispatch:
   push:
-    branches: [ci/add-publish-to-devportal-workflow] # change to alpha, then main when ready
+    branches: [main]
     tags: ['v*']
 
 permissions:
@@ -13,13 +13,13 @@ jobs:
   publish-docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: 24.x
 
-      - uses: pnpm/action-setup@v5
+      - uses: pnpm/action-setup@ac6db6d3c1f721f886538a378a2d73e85697340a # v6
         with:
           package_json_file: docs/package.json
 
@@ -30,6 +30,6 @@ jobs:
         run: npm run build
 
       - name: Publish DevPortal Docs
-        uses: algorandfoundation/devportal/.github/actions/publish-devportal-docs@ci/update-publish-devportal-docs-workflow
+        uses: algorandfoundation/devportal/.github/actions/publish-devportal-docs@release/ak-v4
         with:
           docs-dir: docs
