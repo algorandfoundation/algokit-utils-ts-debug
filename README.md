@@ -11,8 +11,10 @@ Note: [Python's version of algokit-utils](https://github.com/algorandfoundation/
 This library can be installed from NPM using your favourite npm client, e.g.:
 
 ```
-npm install @algorandfoundation/algokit-utils @algorandfoundation/algokit-utils-debug
+npm install @algorandfoundation/algokit-utils algosdk @algorandfoundation/algokit-utils-debug
 ```
+
+Note, `@algorandfoundation/algokit-utils` (v9.x) and `algosdk` (v3.x) are peer dependencies of this package, so they must be present in your project alongside it.
 
 Then to import it and activate `utils-ts` debugging:
 
@@ -22,8 +24,8 @@ import { registerDebugEventHandlers } from '@algorandfoundation/algokit-utils-de
 
 Config.configure({
   debug: true,
-  traceAll: true, // optional, defaults to false, ignoring simulate on successfull transactions.
-  projectRoot: '/path/to/project/root', // if not set, this package will try to find the project root automatically using either the 'ALGOKIT_PROJECT_ROOT' environment variable or by searching you project structure
+  traceAll: true, // optional, defaults to false, ignoring simulate on successful transactions.
+  projectRoot: '/path/to/project/root', // if not set, this package will try to find the project root automatically using either the 'ALGOKIT_PROJECT_ROOT' environment variable or by searching your project structure
   traceBufferSizeMb: 256, // optional, defaults to 256 megabytes. When the output folder containing debug trace files exceeds the size, oldest files are removed to optimize for storage consumption. This is useful when you are running a long running application and want to keep the trace files for debugging purposes but also be mindful of storage consumption.
   maxSearchDepth: 10, // optional, defaults to 10. The maximum depth to search for an `algokit` config file. By default it will traverse at most `10` folders searching for `.algokit.toml` file which will be used to determine the algokit compliant project root path. Ignored if `projectRoot` is provided directly or via `ALGOKIT_PROJECT_ROOT` environment variable.
 })
@@ -36,7 +38,7 @@ See the [documentation site](https://algorandfoundation.github.io/algokit-utils-
 
 This library provides three main functions for debugging Algorand smart contracts:
 
-1. `registerDebugEventHandlers`: The primary function users need to call. It sets up listeners for debugging events emitted by `algokit-utils-ts` (see [AsyncEventEmitter](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/docs/capabilities/event-emitter.md) docs for more details). Must be called before submitting transactions and enabling debug mode in the `algokit-utils-ts` config.
+1. `registerDebugEventHandlers`: The primary function users need to call. It sets up listeners for debugging events emitted by `algokit-utils-ts` (see [AsyncEventEmitter](https://github.com/algorandfoundation/algokit-utils-ts/blob/main/docs/src/content/docs/capabilities/event-emitter.md) docs for more details). Must be called before submitting transactions and enabling debug mode in the `algokit-utils-ts` config.
 
 2. `writeTealDebugSourceMaps`: Generates and persists AlgoKit AVM Debugger-compliant sourcemaps for compiled TEAL sources. Triggered by `AppCompiled` events, it writes `.teal.map` source map files and raw `.teal` files under `{projectRoot}/.algokit/sources/{appName}/`.
 
@@ -67,16 +69,16 @@ For example, a trace file might be named `20220301_123456_lr1000_2pay_1axfer.tra
 
 ## Guiding principles
 
-This library follows the [Guiding Principles of AlgoKit](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/algokit.md#guiding-principles).
+This library follows the [Guiding Principles of AlgoKit](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/src/content/docs/features/overview.md#guiding-principles).
 
 ## Contributing
 
 This is an open source project managed by the Algorand Foundation. See the [AlgoKit contributing page](https://github.com/algorandfoundation/algokit-cli/blob/main/CONTRIBUTING.md) to learn about making improvements.
 
-To successfully run the tests in this repository you need to be running LocalNet via [AlgoKit](https://github.com/algorandfoundation/algokit-cli) and also have package dependencies and `.env.template` copied to `.env` (both of which `algokit bootstrap all` can do for you):
+To successfully run the tests in this repository you need to be running LocalNet via [AlgoKit](https://github.com/algorandfoundation/algokit-cli) and also have package dependencies and `.env.template` copied to `.env` (both of which `algokit project bootstrap all` can do for you):
 
 ```
-algokit bootstrap all
+algokit project bootstrap all
 algokit localnet start
 ```
 

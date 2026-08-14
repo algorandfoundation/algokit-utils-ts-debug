@@ -8,8 +8,11 @@ description: Get started with AlgoKit TypeScript AVM Debugging Utilities.
 This library can be installed from NPM using your favourite npm client, e.g.:
 
 ```bash
-npm install @algorandfoundation/algokit-utils @algorandfoundation/algokit-utils-debug
+npm install @algorandfoundation/algokit-utils algosdk @algorandfoundation/algokit-utils-debug
 ```
+
+> [!NOTE]
+> `@algorandfoundation/algokit-utils` (v9.x) and `algosdk` (v3.x) are peer dependencies of this package, so they must be present in your project alongside it.
 
 ## Usage
 

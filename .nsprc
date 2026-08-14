@@ -1,27 +1,47 @@
 {
-  "1115543": {
+  "1124287": {
     "active": true,
-    "expiry": "2026-10-22",
-    "notes": "Indirect dependency via npm CLI (brace-expansion), not a runtime vulnerability"
+    "expiry": "2026-11-14",
+    "notes": "tar bundled inside the npm CLI package (dev-only, via semantic-release > @semantic-release/npm); no npm release with a fixed bundle exists yet; not a runtime vulnerability"
   },
-  "1115551": {
+  "1130591": {
     "active": true,
-    "expiry": "2026-10-22",
-    "notes": "Indirect dependency via npm CLI (picomatch), not a runtime vulnerability"
+    "expiry": "2026-11-14",
+    "notes": "brace-expansion bundled inside the npm CLI package (dev-only, via semantic-release > @semantic-release/npm); no npm release with a fixed bundle exists yet; not a runtime vulnerability"
   },
-  "1115554": {
+  "1130734": {
     "active": true,
-    "expiry": "2026-10-22",
-    "notes": "Indirect dependency via npm CLI (picomatch), not a runtime vulnerability"
+    "expiry": "2026-11-14",
+    "notes": "brace-expansion bundled inside the npm CLI package (dev-only, via semantic-release > @semantic-release/npm); no npm release with a fixed bundle exists yet; not a runtime vulnerability"
   },
-  "1118827": {
+  "1130716": {
     "active": true,
-    "expiry": "2026-10-22",
-    "notes": "Indirect dependency via npm CLI (ip-address), not a runtime vulnerability"
+    "expiry": "2026-11-14",
+    "notes": "undici bundled inside the npm CLI package (dev-only, via semantic-release > @semantic-release/npm > npm > node-gyp); no npm release with a fixed bundle exists yet; not a runtime vulnerability"
   },
-  "1119088": {
+  "1130727": {
     "active": true,
-    "expiry": "2026-10-22",
-    "notes": "Indirect dependency via npm CLI (brace-expansion), not a runtime vulnerability"
+    "expiry": "2026-11-14",
+    "notes": "undici bundled inside the npm CLI package (dev-only, via semantic-release > @semantic-release/npm > npm > node-gyp); no npm release with a fixed bundle exists yet; not a runtime vulnerability"
+  },
+  "1130732": {
+    "active": true,
+    "expiry": "2026-11-14",
+    "notes": "undici bundled inside the npm CLI package (dev-only, via semantic-release > @semantic-release/npm > npm > node-gyp); no npm release with a fixed bundle exists yet; not a runtime vulnerability"
+  },
+  "1130722": {
+    "active": true,
+    "expiry": "2026-11-14",
+    "notes": "ip-address bundled inside the npm CLI package (dev-only, via semantic-release > @semantic-release/npm > npm > socks-proxy-agent); no npm release with a fixed bundle exists yet; not a runtime vulnerability"
+  },
+  "1130723": {
+    "active": true,
+    "expiry": "2026-11-14",
+    "notes": "ip-address bundled inside the npm CLI package (dev-only, via semantic-release > @semantic-release/npm > npm > socks-proxy-agent); no npm release with a fixed bundle exists yet; not a runtime vulnerability"
+  },
+  "1130724": {
+    "active": true,
+    "expiry": "2026-11-14",
+    "notes": "ip-address bundled inside the npm CLI package (dev-only, via semantic-release > @semantic-release/npm > npm > socks-proxy-agent); no npm release with a fixed bundle exists yet; not a runtime vulnerability"
   }
 }

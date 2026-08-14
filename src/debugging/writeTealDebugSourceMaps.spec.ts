@@ -1,10 +1,11 @@
-import { Config, EventType, TealSourcesDebugEventData } from '@algorandfoundation/algokit-utils'
+import { Config, EventType } from '@algorandfoundation/algokit-utils'
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
+import { beforeAll, describe, expect, test, vi } from 'vitest'
+import algosdk from 'algosdk'
 import * as fsSync from 'fs'
 import * as fs from 'fs/promises'
 import * as os from 'os'
 import * as path from 'path'
-import { beforeAll, describe, expect, test, vi } from 'vitest'
 import { registerDebugEventHandlers } from '../index'
 
 async function fileExists(filePath: string): Promise<boolean> {
@@ -22,7 +23,7 @@ describe('persistSourceMaps tests', () => {
 
   beforeAll(async () => {
     registerDebugEventHandlers()
-    return localnet.newScope()
+    return localnet.beforeEach()
   })
 
   test(
@@ -40,8 +41,8 @@ int 1
 #pragma version 9
 int 1
 `
-      const compiledApproval = await localnet.context.algorand.client.algod.tealCompile(approval, { sourcemap: true })
-      const compiledClear = await localnet.context.algorand.client.algod.tealCompile(clear, { sourcemap: true })
+      const compiledApproval = await localnet.context.algorand.client.algod.compile(approval).sourcemap(true).do()
+      const compiledClear = await localnet.context.algorand.client.algod.compile(clear).sourcemap(true).do()
 
       await Config.events.emitAsync(EventType.AppCompiled, {
         sources: [
@@ -51,7 +52,7 @@ int 1
               compiled: compiledApproval.result,
               compiledHash: compiledApproval.hash,
               compiledBase64ToBytes: new Uint8Array(Buffer.from(compiledApproval.result, 'base64')),
-              sourceMap: compiledApproval.sourcemap!,
+              sourceMap: compiledApproval['sourcemap']!.data as unknown as algosdk.ProgramSourceMap,
             },
             appName: 'cool_app',
             fileName: 'approval',
@@ -62,13 +63,13 @@ int 1
               compiled: compiledClear.result,
               compiledHash: compiledClear.hash,
               compiledBase64ToBytes: new Uint8Array(Buffer.from(compiledClear.result, 'base64')),
-              sourceMap: compiledClear.sourcemap!,
+              sourceMap: compiledClear['sourcemap']!.data as unknown as algosdk.ProgramSourceMap,
             },
             appName: 'cool_app',
             fileName: 'clear',
           },
         ],
-      } satisfies TealSourcesDebugEventData)
+      })
 
       const rootPath = path.join(cwd, '.algokit', 'sources')
       const sourcemapFilePath = path.join(rootPath, 'sources.avm.json')
